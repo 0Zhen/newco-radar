@@ -46,9 +46,9 @@ curl -s "https://data.gov.tw/api/v2/rest/dataset/6047" -H "Accept: application/j
 
 本專案是「筆電開發 → git push → 自動發佈」新工作流的第一個練手專案：純靜態頁，push 後由平台自動發佈，**完全不經過樹莓派**。
 
-- [ ] 2-1 `git init` ＋ 建 GitHub repo（`.gitignore` 排除暫存檔；本 repo 無機密，可公開可私有，由使用者決定）
-- [ ] 2-2 接上 GitHub Pages（Settings → Pages → 從 main 分支根目錄發佈）或 Cloudflare Pages 擇一；驗收＝push 後幾分鐘內公開網址看得到新版
-- [ ] 2-3 使用者建 Google 表單（欄位：Email、想收哪個縣市、想收哪類產業、你的行業），全域取代 `index.html` 內的占位符後 push
+- [x] 2-1 `git init` ＋ 建 GitHub repo（2026-07-16：`gh repo create 0Zhen/newco-radar --public`，本地 main 分支已 push）
+- [x] 2-2 接上 GitHub Pages（2026-07-16：`gh api` 啟用 Pages，來源 main 分支根目錄；網址 https://0zhen.github.io/newco-radar/ ，部署驗證見下方紀錄）
+- [x] 2-3 使用者建 Google 表單（2026-07-16：`https://forms.gle/mK9MvVTf3712GGvM9`，已全域取代 `index.html` 內 2 處占位符並 push）
 - [ ] 2-4 社團貼文文案（遵守 3.3 文案紅線）
 - [ ] 2-5 email 數追蹤：驗證門檻 10 個 email，沒達標就停損不開發產品
 
