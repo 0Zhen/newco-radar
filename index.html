@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>開業雷達｜每週新設公司名單，寄到你的信箱</title>
+<meta name="description" content="每週把你指定縣市＋產業的新設公司名單，整理好寄到信箱。資料 100% 來自政府公開資料，幫你省下每月翻幾千筆登記資料的時間。">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --bg-alt: #f4f5f7;
+    --text: #1a1d23;
+    --text-muted: #545b66;
+    --border: #dfe3e8;
+    --accent: #0f6b4c;
+    --accent-contrast: #ffffff;
+    --accent-soft: #e4f3ec;
+    --card-bg: #ffffff;
+    --table-head-bg: #eef1f4;
+    --shadow: 0 1px 3px rgba(20, 24, 30, 0.08);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14171c;
+      --bg-alt: #1b1f26;
+      --text: #edeff2;
+      --text-muted: #a7afbb;
+      --border: #2c323c;
+      --accent: #3ecf95;
+      --accent-contrast: #08110d;
+      --accent-soft: #1b2f27;
+      --card-bg: #1b1f26;
+      --table-head-bg: #232830;
+      --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: "Noto Serif TC", "Songti TC", serif;
+    line-height: 1.4;
+    margin: 0 0 0.6em;
+  }
+
+  .num { font-variant-numeric: tabular-nums; }
+
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  section {
+    padding: 56px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  section:last-of-type { border-bottom: none; }
+
+  .hero {
+    padding-top: 64px;
+    text-align: center;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.6rem, 4vw + 1rem, 2.4rem);
+    margin-bottom: 0.5em;
+  }
+
+  .hero p {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 640px;
+    margin: 0 auto 1.8em;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--accent-contrast);
+    text-decoration: none;
+    font-weight: 700;
+    padding: 14px 32px;
+    border-radius: 999px;
+    font-size: 1.05rem;
+    box-shadow: var(--shadow);
+  }
+
+  .cta-btn:hover { opacity: 0.92; }
+
+  h2 {
+    font-size: 1.4rem;
+    text-align: center;
+    margin-bottom: 0.9em;
+  }
+
+  .section-sub {
+    text-align: center;
+    color: var(--text-muted);
+    max-width: 620px;
+    margin: 0 auto 2em;
+  }
+
+  .audience-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+
+  .audience-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+  }
+
+  .audience-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.4em;
+  }
+
+  .audience-card p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    margin: 0;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 640px;
+    font-size: 0.88rem;
+  }
+
+  thead th {
+    background: var(--table-head-bg);
+    text-align: left;
+    padding: 12px 14px;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--border);
+  }
+
+  tbody td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+
+  .table-note {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  .honesty-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 14px;
+  }
+
+  .honesty-list li {
+    background: var(--accent-soft);
+    border-radius: 10px;
+    padding: 16px 18px;
+    color: var(--text);
+  }
+
+  .pricing-box {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 24px;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+
+  .price {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0.3em 0;
+  }
+
+  .price-note {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    margin-bottom: 1.4em;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .faq-item:last-child { border-bottom: none; }
+
+  .faq-q {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 16px 4px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .faq-q .icon {
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+    color: var(--accent);
+  }
+
+  .faq-item[data-open="true"] .faq-q .icon {
+    transform: rotate(45deg);
+  }
+
+  .faq-a {
+    display: none;
+    color: var(--text-muted);
+    padding: 0 4px 18px;
+  }
+
+  .faq-item[data-open="true"] .faq-a {
+    display: block;
+  }
+
+  footer {
+    padding: 40px 0 64px;
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  footer p { margin: 0.4em 0; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <section class="hero">
+    <h1>每週一早上，你目標縣市＋產業的新設公司名單，寄到你的信箱。</h1>
+    <p>全台每月約 3,500 家新公司散在政府登記資料裡，開業雷達幫你篩出屬於你的那幾十家。</p>
+    <a class="cta-btn" href="https://forms.gle/REPLACE_ME"><!-- TODO: 替換成正式 Google 表單網址 -->留下 Email，免費搶先體驗</a>
+  </section>
+
+  <section>
+    <h2>給誰用</h2>
+    <p class="section-sub">開業頭 30 天，是最容易被接觸、也最容易被同業搶先的黃金期。</p>
+    <div class="audience-grid">
+      <div class="audience-card">
+        <h3>記帳士／會計事務所</h3>
+        <p>新公司剛設立就需要記帳與報稅規劃，越早接觸越可能成為長期客戶。</p>
+      </div>
+      <div class="audience-card">
+        <h3>辦公設備與傢俱</h3>
+        <p>新公司開業就要添購辦公桌椅、事務機，開業前後是採購決策的窗口期。</p>
+      </div>
+      <div class="audience-card">
+        <h3>電信與網路</h3>
+        <p>新公司需要申辦電話、網路與門號方案，搶在對手業務前一步聯絡。</p>
+      </div>
+      <div class="audience-card">
+        <h3>銀行開戶與收單</h3>
+        <p>公司戶開戶、收單服務需求集中在成立初期，名單越新越有轉換機會。</p>
+      </div>
+      <div class="audience-card">
+        <h3>商業保險</h3>
+        <p>新公司對營運風險與員工保障剛開始評估，是保單需求萌芽的第一時間。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>你每週會收到什麼</h2>
+    <p class="section-sub">依你指定的縣市＋產業，篩出新設公司清單，補齊營業項目後直接可用。</p>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>統編</th>
+            <th>公司名稱</th>
+            <th>縣市</th>
+            <th>代表人</th>
+            <th>資本額</th>
+            <th>營業項目</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="num">24998314</td>
+            <td>信順報關有限公司</td>
+            <td>桃園市</td>
+            <td>謝岳洲</td>
+            <td class="num">5,000,000</td>
+            <td>報關業、航空貨運承攬業</td>
+          </tr>
+          <tr>
+            <td class="num">62054640</td>
+            <td>寶揚應用材料股份有限公司</td>
+            <td>新北市</td>
+            <td>王惟揚</td>
+            <td class="num">1,000,000</td>
+            <td>化學原料批發業、電子材料批發業</td>
+          </tr>
+          <tr>
+            <td class="num">62056507</td>
+            <td>弼呈工程有限公司</td>
+            <td>基隆市</td>
+            <td>陳顗安</td>
+            <td class="num">100,000</td>
+            <td>配管工程業、電器安裝業</td>
+          </tr>
+          <tr>
+            <td class="num">62060164</td>
+            <td>合美環保有限公司</td>
+            <td>新竹縣</td>
+            <td>崔秋梅</td>
+            <td class="num">5,000,000</td>
+            <td>建築物清潔服務業、廢棄物清除業</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">節錄自 2026 年 6 月經濟部公司設立登記清冊（真實資料）</p>
+  </section>
+
+  <section>
+    <h2>先說清楚</h2>
+    <ul class="honesty-list">
+      <li>名單不含電話與 Email——政府公開資料本來就沒有，我們給的是精準開發標的，不是電話簿。</li>
+      <li>資料 100% 來自政府公開資料，依政府資料開放授權條款合法利用。</li>
+      <li>我們做的是「幫你省下每月翻 3,500 筆的時間」：篩選、補營業項目、整理成可直接用的格式。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>定價與搶先體驗</h2>
+    <div class="pricing-box">
+      <p>正式上線後預計</p>
+      <p class="price">NT$ 299 / 月</p>
+      <p class="price-note">現在留下 Email：免費收到依你條件篩好的第一份名單，正式上線後早鳥半價。</p>
+      <a class="cta-btn" href="https://forms.gle/REPLACE_ME"><!-- TODO: 替換成正式 Google 表單網址 -->留下 Email，免費搶先體驗</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>常見問題</h2>
+    <div id="faq">
+      <div class="faq-item" data-open="false">
+        <button class="faq-q" type="button">
+          <span>資料合法嗎？</span>
+          <span class="icon">＋</span>
+        </button>
+        <div class="faq-a">
+          <p>合法。名單來自政府資料開放平臺「公司設立登記清冊」與經濟部商工行政資料開放平臺，兩者皆為政府依法公開的資料，依政府資料開放授權條款利用，不涉及爬取私人平台或未授權資料。</p>
+        </div>
+      </div>
+      <div class="faq-item" data-open="false">
+        <button class="faq-q" type="button">
+          <span>多久寄一次？</span>
+          <span class="icon">＋</span>
+        </button>
+        <div class="faq-a">
+          <p>每週一次，寄送你指定縣市＋產業當週或當月新增的設立登記名單。</p>
+        </div>
+      </div>
+      <div class="faq-item" data-open="false">
+        <button class="faq-q" type="button">
+          <span>可以退訂嗎？</span>
+          <span class="icon">＋</span>
+        </button>
+        <div class="faq-a">
+          <p>可以，正式服務會提供隨時取消訂閱的方式，不綁約。</p>
+        </div>
+      </div>
+      <div class="faq-item" data-open="false">
+        <button class="faq-q" type="button">
+          <span>為什麼沒有電話欄位？</span>
+          <span class="icon">＋</span>
+        </button>
+        <div class="faq-a">
+          <p>因為政府公開的設立登記資料本來就不包含電話或 Email，任何聲稱有這類欄位的名單來源都值得存疑。我們如實提供官方登記欄位，並補上營業項目方便你判斷是否為目標客群。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>資料來源：經濟部商工行政資料開放平臺、政府資料開放平臺，依政府資料開放授權條款利用。</p>
+    <p>本服務與經濟部無隸屬或背書關係。</p>
+  </footer>
+
+</div>
+
+<script>
+  document.querySelectorAll('.faq-item').forEach(function (item) {
+    item.querySelector('.faq-q').addEventListener('click', function () {
+      var isOpen = item.getAttribute('data-open') === 'true';
+      item.setAttribute('data-open', isOpen ? 'false' : 'true');
+    });
+  });
+</script>
+
+</body>
+</html>
