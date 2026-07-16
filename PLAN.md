@@ -135,3 +135,11 @@ curl -s "https://data.gov.tw/api/v2/rest/dataset/6047" -H "Accept: application/j
 補上社群分享卡與搜尋引擎基本 meta：`canonical`、`robots`、Open Graph、Twitter Card、inline SVG favicon（data URI，不多一次請求）、JSON-LD（`Service` + `FAQPage`，FAQ 內容逐字對應頁面可見文字）。另外用 PIL 產生 `og-image.png`（1200×630，需安裝 `fonts-noto-cjk` 套件才能正確渲染繁中字）。
 
 備註：真正的搜尋排名需要時間累積外部連結與內容，這頁單獨存在短期內不會有自然搜尋流量，這批改動主要價值是**分享到社群/社團時的連結預覽卡片**會正常顯示品牌圖與文字，而不是空白或亂碼。
+
+## 8. 驗證追蹤（對應 2-5，門檻 10 個 email）
+
+| 日期 | 累計 email 數 | 備註 |
+|---|---|---|
+| 2026-07-16 | 1 | Threads 貼文（版本 A）發出後第一個回覆，尚未知曝光量與訂閱者填寫內容 |
+
+未達門檻前持續補紀錄；判斷停損與否看累計數字，不要只看單日。
