@@ -129,3 +129,9 @@ curl -s "https://data.gov.tw/api/v2/rest/dataset/6047" -H "Accept: application/j
 - [x] 不得偽造「已有 N 位訂閱者」等不實社會證明——未使用任何社會證明文案。
 
 遺留事項：Google 表單尚未建立（占位符待使用者建表單後取代）；階段二（git init／建 repo／接部署平台）尚未執行，待使用者確認後進行。
+
+## 7. SEO 補強（2026-07-16，非規格書原定階段，使用者追加要求）
+
+補上社群分享卡與搜尋引擎基本 meta：`canonical`、`robots`、Open Graph、Twitter Card、inline SVG favicon（data URI，不多一次請求）、JSON-LD（`Service` + `FAQPage`，FAQ 內容逐字對應頁面可見文字）。另外用 PIL 產生 `og-image.png`（1200×630，需安裝 `fonts-noto-cjk` 套件才能正確渲染繁中字）。
+
+備註：真正的搜尋排名需要時間累積外部連結與內容，這頁單獨存在短期內不會有自然搜尋流量，這批改動主要價值是**分享到社群/社團時的連結預覽卡片**會正常顯示品牌圖與文字，而不是空白或亂碼。
