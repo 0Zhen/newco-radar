@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face {
+    font-family: "Noto Sans TC";
+    src: local("Noto Sans TC");
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 1080px;
+    height: 1920px;
+    background: #14171c;
+    color: #edeff2;
+    font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    overflow: hidden;
+  }
+  .wrap {
+    width: 1080px;
+    height: 1920px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 88px;
+    position: relative;
+    background:
+      radial-gradient(circle at 20% 12%, rgba(62,207,149,0.16), transparent 45%),
+      radial-gradient(circle at 85% 88%, rgba(62,207,149,0.10), transparent 40%);
+  }
+  .tag {
+    display: inline-block;
+    align-self: flex-start;
+    font-size: 30px;
+    color: #3ecf95;
+    background: #1b2f27;
+    border: 1px solid #2c4a3d;
+    border-radius: 999px;
+    padding: 14px 32px;
+    margin-bottom: 56px;
+    letter-spacing: 1px;
+  }
+  h1 {
+    font-family: "Noto Serif TC", "Songti TC", serif;
+    font-size: 84px;
+    line-height: 1.32;
+    font-weight: 700;
+    margin-bottom: 56px;
+  }
+  h1 .accent { color: #3ecf95; }
+  .body {
+    font-size: 40px;
+    line-height: 1.75;
+    color: #c7cdd6;
+    margin-bottom: 48px;
+  }
+  .divider {
+    width: 96px;
+    height: 4px;
+    background: #3ecf95;
+    border-radius: 2px;
+    margin-bottom: 48px;
+  }
+  .honest-box {
+    background: #1b1f26;
+    border: 1px solid #2a2f38;
+    border-radius: 24px;
+    padding: 40px 44px;
+    font-size: 32px;
+    line-height: 1.7;
+    color: #a7afbb;
+    margin-bottom: 72px;
+  }
+  .honest-box b { color: #edeff2; }
+  .cta {
+    font-size: 46px;
+    font-weight: 700;
+    color: #08110d;
+    background: #3ecf95;
+    border-radius: 20px;
+    padding: 36px 0;
+    text-align: center;
+  }
+  .cta-hint {
+    text-align: center;
+    font-size: 30px;
+    color: #6b7280;
+    margin-top: 28px;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <span class="tag">個人小專案・想聽聽大家的意見</span>
+    <h1>每週幫你篩出<br><span class="accent">你產業別</span>的<br>新設公司名單</h1>
+    <div class="body">
+      全台每月約 3,500 家新公司登記，資料來自政府公開資訊。
+      如果你的工作是開發新客戶（記帳士、辦公設備、電信、保險、銀行開戶⋯⋯），
+      這份名單或許能幫你省下自己翻資料的時間。
+    </div>
+    <div class="divider"></div>
+    <div class="honest-box">
+      <b>先說清楚：</b>名單不含電話／Email（政府公開資料本來就沒有這些）；
+      正式定價還沒定，現在私訊我可以先免費試用看看，純粹想知道這對你有沒有用。
+    </div>
+    <div class="cta">private message 我聊聊 →</div>
+    <div class="cta-hint">或點下面的連結貼紙留個 email，我先跟你聯絡</div>
+  </div>
+</body>
+</html>
