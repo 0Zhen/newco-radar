@@ -2,3 +2,7 @@
 Thumbs.db
 *.swp
 *.tmp
+
+# 抓下來的名單與報名者資料，不進 public repo
+data/
+out/
