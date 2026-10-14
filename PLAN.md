@@ -166,5 +166,9 @@ curl -s "https://data.gov.tw/api/v2/rest/dataset/6047" -H "Accept: application/j
 - 信件草稿：抓完後跑 `python3 -I scripts/make_lists.py data/week.json data/responses.csv out/1007-1013/`，每人一份 `.html`（本文）＋`.csv`（附件）。使用者已看過預覽並定稿內容（署名 Chris、移除無電話說明、第 3 題問合理價格）。
 - 下一步：Gmail 連接器已授權 → 把 4 封信存成 newcoradar 的 Gmail **草稿**（附上 CSV），由使用者自己檢查後寄出，不要直接寄。
 - **進度（2026-10-14 晚）**：10/07–10/13 抓完共 601 家（10/07 170、10/08 141、10/12 174、10/13 116；10/09 國慶補假、10/10–11 週末為 0）。4 封 Gmail 草稿已建在 newcoradar：bogi79979 265 家、c2cbuy.business 19 家、s8698tw 488 家、thismamaway 254 家。只有 c2cbuy 那封附上了 CSV（連接器讀不到草稿內容，無法自動驗證附件是否完整，寄前要打開確認）；另外 3 封的 CSV 太大（base64 19–41 萬字元），沒辦法經由連接器附加，要使用者從 VPS `out/1007-1013/attach/` 取檔後手動附上再寄。
+- **`scripts/send.py`（2026-10-14 晚）**：讀 `out/<期間>/manifest.json`，用 Gmail API 直接從硬碟附 CSV，存成 newcoradar 的草稿（`draft`，預設）或寄出（`send`，要輸入 yes）。只用標準函式庫，scope 只有 `gmail.compose`（不能讀信）。憑證放 `~/.config/newco-radar/`（repo 外、權限 600）。信件改成 landing page 配色（深綠標頭、淺綠條件框、灰底問卷區），全部 inline 樣式。
+  - 尚未執行過，要先做一次設定：Google Cloud 建專案→啟用 Gmail API→OAuth 同意畫面（外部、加 newcoradar 為測試使用者）→建「電腦版應用程式」用戶端→下載 JSON 放到 `~/.config/newco-radar/client_secret.json`→`python3 scripts/send.py auth`。
+  - 注意：同意畫面維持「測試中」時 refresh token 7 天就過期；要每週 cron 自動跑，需把同意畫面發布為「正式版」（未驗證應用程式，自己用不受影響），或改用 SMTP＋應用程式密碼直接寄。
+  - 用 send.py 建好新草稿後，刪掉先前經由連接器建的 4 封舊草稿（舊樣式、3 封沒附件）。
 - 待辦：Google 表單「發零售」選項錯字，請使用者改成「批發零售」。代表人欄位本次保留（附件內），收費前確認個資法。
 - 舊的預覽文件「開業雷達｜信件草稿預覽（thismamaway，部分資料）」在 newcoradar 雲端硬碟，是舊版內容，可刪。

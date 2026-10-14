@@ -4,7 +4,8 @@
 responses.csv = Google 表單回覆試算表匯出的 CSV。同一 Email 填多次以最新一筆為準。
 每人產出兩個檔：
   NN_<email>.csv   完整名單（附件，UTF-8 BOM，Excel 直接開）
-  NN_<email>.html  信件草稿（瀏覽器開啟→全選複製→貼進 Gmail，表格格式會保留）
+  NN_<email>.html  信件本文（瀏覽器開啟可預覽）
+  manifest.json    收件人、主旨、本文與附件路徑，給 send.py 用
 """
 import csv
 import html
@@ -94,42 +95,77 @@ def write_csv(path, hits):
                         roc(c["核准設立日期"]), "；".join(x.split(" ", 1)[-1] for x in c["營業項目"])])
 
 
-def write_html(path, p, hits, period, attach):
+# 配色沿用 landing page（index.html 的 :root 變數）；email 客戶端常忽略 <style>，一律 inline
+ACCENT, ACCENT_SOFT, BG_ALT, BORDER, HEAD_BG = "#0f6b4c", "#e4f3ec", "#f4f5f7", "#dfe3e8", "#eef1f4"
+TEXT, MUTED = "#1a1d23", "#545b66"
+SANS = "'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif"
+SERIF = "'Noto Serif TC','Songti TC',serif"
+
+
+def subject_of(period):
+    return f"【開業雷達】你的第一份新設公司名單（{period}）"
+
+
+def write_html(path, p, hits, period):
+    """信件本文（完整 HTML，send.py 直接當 Gmail 本文；瀏覽器開啟即預覽）"""
     e = html.escape
-    td = 'style="padding:6px 8px;border-bottom:1px solid #ddd;vertical-align:top"'
-    th = 'style="padding:6px 8px;border-bottom:2px solid #333;text-align:left;white-space:nowrap"'
+    td = f'style="padding:10px 12px;border-bottom:1px solid {BORDER};vertical-align:top"'
+    th = f'style="padding:10px 12px;background:{HEAD_BG};border-bottom:1px solid {BORDER};text-align:left;white-space:nowrap"'
     by_county = "、".join(f"{k} {v}" for k, v in Counter(c["縣市"] for c in hits).most_common())
     rows = "".join(
-        f"<tr><td {td}>{e(c['公司名稱'])}</td><td {td}>{e(c['縣市'])}</td>"
+        f"<tr><td {td}><b>{e(c['公司名稱'])}</b></td><td {td}>{e(c['縣市'])}</td>"
         f"<td {td} align=right>{money(c['資本額'])}</td><td {td}>{roc(c['核准設立日期'])[5:]}</td>"
-        f"<td {td}>{e(items_short(c))}</td></tr>"
+        f"<td {td}><span style=\"color:{MUTED}\">{e(items_short(c))}</span></td></tr>"
         for c in sorted(hits, key=lambda c: -c["資本額"])[:HIGHLIGHTS])
     tip = TIPS.get(p["行業"], DEFAULT_TIP)
-    body = f"""<!doctype html><meta charset="utf-8"><title>{e(p['email'])}</title>
-<div style="font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:15px;line-height:1.7;color:#222;max-width:720px">
-<p style="color:#888;font-size:13px">收件人：{e(p['email'])}<br>主旨：【開業雷達】你的第一份新設公司名單（{period}）<br>附件：{e(attach)}</p>
-<hr>
-<p>你好，</p>
-<p>我是開業雷達的 Chris。謝謝你 {p['first']} 留下 Email，讓你久等了，說好的第一份名單在這裡。</p>
-<p>依你填的條件：<br>
-・縣市：{e(p['縣市顯示'])}<br>
-・產業：{e(p['產業顯示'])}<br>
-篩出 <b>{period}</b> 經濟部核准設立的新公司，共 <b>{len(hits)} 家</b>（{by_county}）。</p>
-<p>{e(tip)}以下先列 {min(HIGHLIGHTS, len(hits))} 家，<b>完整 {len(hits)} 家在附件</b>（Excel 可直接開，含統編、完整地址、代表人、全部營業項目）。</p>
-<table style="border-collapse:collapse;font-size:14px;width:100%">
+    body = f"""<!doctype html><html><head><meta charset="utf-8"><title>{e(subject_of(period))}</title></head>
+<body style="margin:0;padding:0;background:{BG_ALT}">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{BG_ALT};padding:24px 12px">
+<tr><td align="center">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:720px;background:#ffffff;border:1px solid {BORDER};border-radius:12px;overflow:hidden;font-family:{SANS};font-size:15px;line-height:1.7;color:{TEXT}">
+<tr><td style="background:{ACCENT};padding:24px 28px;color:#ffffff">
+<div style="font-family:{SERIF};font-size:22px;font-weight:700">開業雷達</div>
+<div style="font-size:14px;opacity:0.9">{period} 新設公司名單</div>
+</td></tr>
+<tr><td style="padding:24px 28px 8px">
+<p style="margin:0 0 12px">你好，</p>
+<p style="margin:0 0 16px">我是開業雷達的 Chris。謝謝你 {p['first']} 留下 Email，讓你久等了，說好的第一份名單在這裡。</p>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{ACCENT_SOFT};border-left:4px solid {ACCENT};border-radius:8px">
+<tr><td style="padding:16px 20px">
+<div style="font-size:13px;color:{MUTED}">你的條件</div>
+<div>縣市：{e(p['縣市顯示'])}</div>
+<div>產業：{e(p['產業顯示'])}</div>
+<div style="margin-top:10px;font-size:13px;color:{MUTED}">{period} 經濟部核准設立</div>
+<div><span style="font-family:{SERIF};font-size:30px;font-weight:700;color:{ACCENT}">{len(hits)}</span> 家新公司</div>
+<div style="font-size:13px;color:{MUTED}">{e(by_county)}</div>
+</td></tr></table>
+<p style="margin:20px 0 12px">{e(tip)}以下先列 {min(HIGHLIGHTS, len(hits))} 家，<b>完整 {len(hits)} 家在附件</b>（Excel 可直接開，含統編、完整地址、代表人、全部營業項目）。</p>
+</td></tr>
+<tr><td style="padding:0 28px">
+<table cellpadding="0" cellspacing="0" style="border-collapse:separate;border-spacing:0;width:100%;font-size:14px;border:1px solid {BORDER};border-radius:12px;overflow:hidden">
 <tr><th {th}>公司名稱</th><th {th}>縣市</th><th {th}>資本額</th><th {th}>設立</th><th {th}>主要營業項目</th></tr>
 {rows}
 </table>
-<p>想請你花一分鐘，<b>直接回覆這封信</b>：</p>
-<ol>
+</td></tr>
+<tr><td style="padding:24px 28px 8px">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{BG_ALT};border-radius:12px">
+<tr><td style="padding:18px 22px">
+<div style="font-family:{SERIF};font-size:17px;font-weight:700;color:{ACCENT};margin-bottom:6px">想請你花一分鐘，直接回覆這封信</div>
+<ol style="margin:0;padding-left:20px">
 <li>這份名單對你的業務開發有沒有用？哪個欄位最有用，還缺什麼？</li>
 <li>條件要不要調整？（縣市或產業太寬、太窄）</li>
 <li>如果每週一早上固定寄一份，正式上線預計 NT$299/月，你會考慮訂閱嗎？或是你認為合理的價格是多少？</li>
 </ol>
-<p>你的回覆會直接決定這個服務要不要做下去、要怎麼做。謝謝！</p>
-<p>開業雷達　Chris<br>newcoradar@gmail.com</p>
-<p style="font-size:12px;color:#888">資料來源：經濟部商工行政資料開放平臺，依政府資料開放授權條款利用。本服務與經濟部無隸屬或背書關係。</p>
-</div>"""
+</td></tr></table>
+<p style="margin:16px 0">你的回覆會直接決定這個服務要不要做下去、要怎麼做。謝謝！</p>
+<p style="margin:0 0 20px">開業雷達　Chris<br><a href="mailto:newcoradar@gmail.com" style="color:{ACCENT}">newcoradar@gmail.com</a></p>
+</td></tr>
+<tr><td style="padding:14px 28px;border-top:1px solid {BORDER};font-size:12px;color:{MUTED}">
+資料來源：經濟部商工行政資料開放平臺，依政府資料開放授權條款利用。本服務與經濟部無隸屬或背書關係。
+</td></tr>
+</table>
+</td></tr></table>
+</body></html>"""
     open(path, "w", encoding="utf-8").write(body)
 
 
@@ -149,6 +185,7 @@ def main(week, responses, outdir, period=""):
                          "產業": r["想收哪類產業"], "行業": r["你的行業"]}
 
     os.makedirs(outdir, exist_ok=True)
+    manifest = []
     print(f"{len(companies)} 家公司，{len(rows)} 筆回覆，{len(people)} 位不重複報名者，期間 {period}")
     for n, p in enumerate(people.values(), 1):
         cs = {norm(x) for x in split(p["縣市"])}
@@ -161,8 +198,14 @@ def main(week, responses, outdir, period=""):
         base = os.path.join(outdir, f"{n:02d}_{re.sub(r'[^A-Za-z0-9._-]', '_', p['email'])}")
         attach = f"開業雷達_{period.replace('/', '').replace('–', '-')}.csv"
         write_csv(base + ".csv", hits)
-        write_html(base + ".html", p, hits, period, attach)
+        write_html(base + ".html", p, hits, period)
+        manifest.append({"to": p["email"], "subject": subject_of(period), "html": base + ".html",
+                         "attachment": base + ".csv", "attachment_name": attach, "count": len(hits)})
         print(f"{n:02d} {p['email']}: {len(hits)} 家｜縣市={'不限' if cs is None else len(cs)}｜產業={sorted(inds)}")
+
+
+    json.dump(manifest, open(os.path.join(outdir, "manifest.json"), "w", encoding="utf-8"),
+              ensure_ascii=False, indent=1)
 
 
 if __name__ == "__main__":
