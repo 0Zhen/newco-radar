@@ -170,6 +170,13 @@ curl -s "https://data.gov.tw/api/v2/rest/dataset/6047" -H "Accept: application/j
   - 尚未執行過，要先做一次設定：Google Cloud 建專案→啟用 Gmail API→OAuth 同意畫面（外部、加 newcoradar 為測試使用者）→建「電腦版應用程式」用戶端→下載 JSON 放到 `~/.config/newco-radar/client_secret.json`→`python3 scripts/send.py auth`。
   - 注意：同意畫面維持「測試中」時 refresh token 7 天就過期；要每週 cron 自動跑，需把同意畫面發布為「正式版」（未驗證應用程式，自己用不受影響），或改用 SMTP＋應用程式密碼直接寄。
   - **2026-10-15 已設定完成**：同意畫面採「測試中＋newcoradar 為測試使用者」（正式發布需填 Branding，暫不做），所以 refresh token 約 7 天（10/22 前後）失效，屆時 send.py 會報 `invalid_grant`，重跑 `auth` 兩段即可。`auth` 改成兩段式（先印網址，再 `auth '<跳轉網址>'`）。10/15 已用 send.py 建好 4 封含附件的新樣式草稿，尚未寄出。
-  - 用 send.py 建好新草稿後，刪掉先前經由連接器建的 4 封舊草稿（舊樣式、3 封沒附件）。
+  - 舊的 4 封連接器草稿已由使用者刪除。
+- **2026-10-15 第一份名單已寄出**：使用者檢查後從 newcoradar 寄出 4 封（bogi79979 265 家、c2cbuy.business 19 家、s8698tw 488 家、thismamaway 254 家），每封附完整 CSV、含 3 題回饋問題。下一步：收集回覆（名單有沒有用、條件要不要調、NT$299/月 或合理價格），逐筆記在下方「回饋紀錄」。
+
+#### 回饋紀錄
+
+| 日期 | 報名者 | 有沒有用／缺什麼 | 條件調整 | 付費意願／合理價格 |
+|---|---|---|---|---|
+| | | | | |
 - 待辦：Google 表單「發零售」選項錯字，請使用者改成「批發零售」。代表人欄位本次保留（附件內），收費前確認個資法。
 - 舊的預覽文件「開業雷達｜信件草稿預覽（thismamaway，部分資料）」在 newcoradar 雲端硬碟，是舊版內容，可刪。
