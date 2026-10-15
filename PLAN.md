@@ -169,6 +169,7 @@ curl -s "https://data.gov.tw/api/v2/rest/dataset/6047" -H "Accept: application/j
 - **`scripts/send.py`（2026-10-14 晚）**：讀 `out/<期間>/manifest.json`，用 Gmail API 直接從硬碟附 CSV，存成 newcoradar 的草稿（`draft`，預設）或寄出（`send`，要輸入 yes）。只用標準函式庫，scope 只有 `gmail.compose`（不能讀信）。憑證放 `~/.config/newco-radar/`（repo 外、權限 600）。信件改成 landing page 配色（深綠標頭、淺綠條件框、灰底問卷區），全部 inline 樣式。
   - 尚未執行過，要先做一次設定：Google Cloud 建專案→啟用 Gmail API→OAuth 同意畫面（外部、加 newcoradar 為測試使用者）→建「電腦版應用程式」用戶端→下載 JSON 放到 `~/.config/newco-radar/client_secret.json`→`python3 scripts/send.py auth`。
   - 注意：同意畫面維持「測試中」時 refresh token 7 天就過期；要每週 cron 自動跑，需把同意畫面發布為「正式版」（未驗證應用程式，自己用不受影響），或改用 SMTP＋應用程式密碼直接寄。
+  - **2026-10-15 已設定完成**：同意畫面採「測試中＋newcoradar 為測試使用者」（正式發布需填 Branding，暫不做），所以 refresh token 約 7 天（10/22 前後）失效，屆時 send.py 會報 `invalid_grant`，重跑 `auth` 兩段即可。`auth` 改成兩段式（先印網址，再 `auth '<跳轉網址>'`）。10/15 已用 send.py 建好 4 封含附件的新樣式草稿，尚未寄出。
   - 用 send.py 建好新草稿後，刪掉先前經由連接器建的 4 封舊草稿（舊樣式、3 封沒附件）。
 - 待辦：Google 表單「發零售」選項錯字，請使用者改成「批發零售」。代表人欄位本次保留（附件內），收費前確認個資法。
 - 舊的預覽文件「開業雷達｜信件草稿預覽（thismamaway，部分資料）」在 newcoradar 雲端硬碟，是舊版內容，可刪。
